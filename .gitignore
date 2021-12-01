@@ -1,0 +1,9 @@
+.Rproj.user
+.aoccookie
+inst/doc
+/doc/
+/Meta/
+.Rhistory
+.Rdata
+.httr-oauth
+.DS_Store

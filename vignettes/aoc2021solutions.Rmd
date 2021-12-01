@@ -1,0 +1,36 @@
+---
+title: "Advent of Code 2021 Solutions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Advent of Code 2021 Solutions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup , include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = ""
+)
+```
+
+```{r}
+library(adventofcode21)
+```
+
+
+## Day 1
+
+Compute sum of positive differences between values:
+
+```{r f01a}
+x <- read.table(system.file("input01.txt", package = "adventofcode21"))[[1]]
+f01a(x)
+```
+
+Compute sum of positive differences between sums of three consecutive values:
+
+```{r f01b}
+f01b(x)
+```
+
