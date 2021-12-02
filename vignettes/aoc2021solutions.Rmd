@@ -34,3 +34,31 @@ Compute sum of positive differences between sums of three consecutive values:
 f01b(x)
 ```
 
+## Day 2
+
+```{r input-data}
+x <- read.table(system.file("input02.txt", package = "adventofcode21"),
+                col.names = c("direction", "amount"))
+head(x)
+```
+
+Compute horizontal location and depth
+
+```{r}
+position <- f02a(x$direction, x$amount)
+position
+```
+Compute product
+```{r}
+prod(position)
+```
+Compute horizontal location and depth based on aim
+
+```{r}
+position <- f02b(x$direction, x$amount)
+position
+```
+Compute product
+```{r}
+prod(position)
+```
