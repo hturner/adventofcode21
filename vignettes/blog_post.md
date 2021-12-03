@@ -1,0 +1,176 @@
+Advent of Code 2021: First days with R
+================
+
+The Advent of Code (<https://adventofcode.com>) is a series of daily
+programming puzzles running up to Christmas. On 3 December, the Warwick
+R User Group (<https://www.meetup.com/Warwick-useRs>) met jointly with
+the Manchester R-thritis Statistical Computing Group to informally
+discuss our solutions to the puzzles from the first two days. Some of
+the participants shared their solutions in advance
+(<https://personalpages.manchester.ac.uk/staff/david.selby/rthritis/2021-12-03-advent2021/>),
+here we share some of the solutions discussed on the day.
+
+## Day 1: Sonar Sweep
+
+For a full description of the problem see
+<https://adventofcode.com/2021/day/1>.
+
+## Day 1 - Part 1
+
+How many measurements are larger than the previous measurement?
+
+    199  (N/A - no previous measurement)
+    200  (increased)
+    208  (increased)
+    210  (increased)
+    200  (decreased)
+    207  (increased)
+    240  (increased)
+    269  (increased)
+    260  (decreased)
+    263  (increased)
+
+First we’ll create a vector with the example data:
+
+``` r
+x <- c(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)
+```
+
+Heather’s solution: compute differences between consecutive values then
+sum the ones that are positive:
+
+``` r
+f01a <- function(x) {
+  dx <- diff(x)
+  sum(sign(dx) == 1)
+}
+f01a(x)
+```
+
+    ## [1] 7
+
+## Day 1 - Part 2
+
+How many **sliding three-measurement sums** are larger than the previous
+sum?
+
+    199  A           607  (N/A - no previous sum)
+    200  A B         618  (increased)
+    208  A B C       618  (no change)
+    210    B C D     617  (decreased)
+    200  E   C D     647  (increased)
+    207  E F   D     716  (increased)
+    240  E F G       769  (increased)
+    269    F G H     792  (increased)
+    260      G H
+    263        H
+
+Heather’s solution: compute the sums of three consecutive values, then
+use the function from Part 1 to sum the positive differences between
+these values.
+
+``` r
+f01b <- function(x) {
+  n <- length(x)
+  sum3 <- x[1:(n - 2)] + x[2:(n - 1)] + x[3:n]
+  f01a(sum3)
+}
+f01b(x)
+```
+
+    ## [1] 5
+
+# Day 2: Dive!
+
+For a full description of the problem see
+<https://adventofcode.com/2021/day/2>.
+
+## Day 2 - Part 1
+
+-   `forward X` increases the horizontal position by `X` units.
+-   `down X` increases the depth by `X` units.
+-   `up X` decreases the depth by `X` units.
+
+<!-- -->
+
+                      x  depth
+    forward 5   -->   5      -
+    down 5      -->          5
+    forward 8   -->  13
+    up 3        -->          2
+    down 8      -->         10
+    forward 2   -->  15
+
+    ==> x = 15, depth = 10
+
+First we’ll create a data frame with the example data
+
+``` r
+x <-data.frame(direction = c("forward", "down", "forward",
+                             "up", "down", "forward"),
+               amount = c(5, 5, 8, 3, 8, 2))
+```
+
+Heather’s solution: the horizontal value is the sum of the amounts where
+the direction is “forward”. The depth is the sum of the amounts where
+direction is “down” minus the sum of the amounts where direction is “up”
+
+``` r
+f02a <- function(direction, amount) {
+  horizontal <- sum(amount[direction == "forward"])
+  depth <- sum(amount[direction == "down"]) - sum(amount[direction == "up"])
+  c(horizontal = horizontal, depth = depth)
+}
+f02a(x$direction, x$amount)
+```
+
+    ## horizontal      depth 
+    ##         15         10
+
+------------------------------------------------------------------------
+
+## Day 2 - Part 2
+
+-   `down X` increases your aim by `X` units.
+-   `up X` decreases your aim by `X` units.
+-   `forward X` does two things:
+    -   It increases your horizontal position by `X` units.
+    -   It increases your depth by your aim **multiplied by** `X`.
+
+<!-- -->
+
+                      x  aim  depth
+    forward 5   -->   5    -      - 
+    down 5      -->        5      
+    forward 8   -->  13          40
+    up 3        -->        2
+    down 8      -->       10
+    forward 2   -->  15          60
+
+    ==> x = 15, depth = 60
+
+Heather’s solution: first compute the sign of the change to aim, which
+is negative if the direction is “up” and positive otherwise. Then for
+each change in position, if the direction is “forward” add the amount to
+the horizontal position and the amount multiplied by aim to the depth,
+otherwise add sign multiplied by the amount to the aim.
+
+``` r
+f02b <- function(direction, amount) {
+  horizontal <- depth <- aim <- 0
+  sign <- ifelse(direction == "up", -1, 1)
+  for (i in seq_along(direction)){
+    if (direction[i] == "forward"){
+      horizontal <- horizontal + amount[i]
+      depth <- depth + aim * amount[i]
+      next
+    }
+    aim <- aim + sign[i]*amount[i]
+  }
+  c(horizontal = horizontal, depth = depth)
+}
+f02b(x$direction, x$amount)
+```
+
+    ## horizontal      depth 
+    ##         15         60

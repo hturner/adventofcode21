@@ -156,9 +156,3 @@ f02b <- function(direction, amount) {
 f02b(x$direction, x$amount)
 ```
 
-
-
-
-```
-
-
