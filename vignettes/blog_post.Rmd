@@ -1,6 +1,6 @@
 ---
 title: "Advent of Code 2021: First days with R"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
