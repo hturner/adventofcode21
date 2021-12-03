@@ -7,11 +7,13 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The Advent of Code (https://adventofcode.com) is a series of daily programming puzzles running up to Christmas. On 3 December, the Warwick R User Group (https://www.meetup.com/Warwick-useRs) met jointly with the Manchester R-thritis Statistical Computing Group to informally discuss our solutions to the puzzles from the first two days. Some of the participants shared their solutions in advance (https://personalpages.manchester.ac.uk/staff/david.selby/rthritis/2021-12-03-advent2021/), here we share some of the solutions discussed on the day.
+The Advent of Code (https://adventofcode.com) is a series of daily programming puzzles running up to Christmas. On 3 December, the Warwick R User Group (https://www.meetup.com/Warwick-useRs) met jointly with the Manchester R-thritis Statistical Computing Group (https://personalpages.manchester.ac.uk/staff/david.selby/rthritis.html) to informally discuss our solutions to the puzzles from the first two days. Some of the participants shared their solutions in advance as shared in this slide deck: https://personalpages.manchester.ac.uk/staff/david.selby/rthritis/2021-12-03-advent2021/.
+
+In this post, Heather Turner (RSE Fellow, Statistics) shares her solutions and how they can be improved based on the ideas put forward at the meetup, while James Tripp (Senior Research Software Engineer, Information and Digital Group) reflects on some issues raised in the meetup discussion.
 
 ## Day 1: Sonar Sweep
 
-For a full description of the problem see https://adventofcode.com/2021/day/1.
+For a full description of the problem for Day 1, see https://adventofcode.com/2021/day/1.
 
 ## Day 1 - Part 1
 
@@ -36,7 +38,7 @@ First we'll create a vector with the example data:
 x <- c(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)
 ```
 
-Heather's solution: compute differences between consecutive values then sum the ones that are positive:
+Then the puzzle can be solved with the following R function, that takes the vector `x` as input, uses `diff()` to compute differences between consecutive values of `x`, then sums the differences that are positive:
 
 ```{r}
 f01a <- function(x) {
@@ -45,6 +47,7 @@ f01a <- function(x) {
 }
 f01a(x)
 ```
+Inspired by David Selby's solution (https://personalpages.manchester.ac.uk/staff/david.selby/rthritis/2021-12-03-advent2021/resources/adventofcode.html#7), this could be made slightly simpler by finding the positive differences with `dx > 0`, rather than using the `sign()` function.
 
 ## Day 1 - Part 2
 
@@ -63,7 +66,7 @@ How many **sliding three-measurement sums** are larger than the previous sum?
 263        H
 ```
 
-Heather's solution: compute the sums of three consecutive values, then use the function from Part 1 to sum the positive differences between these values.
+This can be solved by the following function of `x`. First, the rolling sums of three consecutive values are computed in a vectorized computation, i.e. creating three vectors containing the first, second and third value in the sum, then adding the vectors together. Then, the function from Part 1 is used to sum the positive differences between these values.
 
 ```{r}
 f01b <- function(x) {
@@ -72,6 +75,15 @@ f01b <- function(x) {
   f01a(sum3)
 }
 f01b(x)
+```
+David Schoch put forward a solution (https://personalpages.manchester.ac.uk/staff/david.selby/rthritis/2021-12-03-advent2021/resources/adventofcode.html#8) that takes advantage of the fact that the difference between consecutive rolling sums of three values is just the difference between values three places apart (the second and third values in the first sum cancel out the first and second values in the second sum). Putting what we've learnt together gives this much neater solution for Day 1 Part 2:
+
+```{r}
+f01b_revised <- function(x) {
+  dx3 <- diff(x, lag = 3)
+  sum(dx3 > 0)
+}
+f01b_revised(x)
 ```
 
 # Day 2: Dive!
@@ -85,15 +97,15 @@ For a full description of the problem see https://adventofcode.com/2021/day/2.
 - `up X` decreases the depth by `X` units.
 
 ```
-                  x  depth
-forward 5   -->   5      -
-down 5      -->          5
-forward 8   -->  13
-up 3        -->          2
-down 8      -->         10
-forward 2   -->  15
+                  horizontal  depth
+forward 5   -->            5      -
+down 5      -->                   5
+forward 8   -->           13
+up 3        -->                   2
+down 8      -->                  10
+forward 2   -->           15
 
-==> x = 15, depth = 10
+==> horizontal = 15, depth = 10
 ```
 
 First we'll create a data frame with the example data
@@ -104,7 +116,7 @@ x <-data.frame(direction = c("forward", "down", "forward",
                amount = c(5, 5, 8, 3, 8, 2))
 ```
 
-Heather's solution: the horizontal value is the sum of the amounts where the direction is "forward". The depth is the sum of the amounts where direction is "down" minus the sum of the amounts where direction is "up"
+Then the puzzle can be solved with the following function, which takes the variables `direction` and `amount` as input. The horizontal position is the sum of the amounts where the direction is "forward". The depth is the sum of the amounts where direction is "down" minus the sum of the amounts where direction is "up".
 
 ```{r}
 f02a <- function(direction, amount) {
@@ -113,6 +125,27 @@ f02a <- function(direction, amount) {
   c(horizontal = horizontal, depth = depth)
 }
 f02a(x$direction, x$amount)
+```
+The code above uses logical indexing to select the amounts that contribute to each sum. An alternative presented by David Selby (https://personalpages.manchester.ac.uk/staff/david.selby/rthritis/2021-12-03-advent2021/resources/adventofcode.html#16) is to coerce the logical indices to numeric (coercing `TRUE` to 1 and `FALSE` to 0) and multiply amount by the resulting vectors:
+
+```{r}
+f02a_selby <- function(direction, amount) {
+  horizontal_move <- amount * (direction == 'forward')
+  depth_move <- amount * ((direction == 'down') - (direction == 'up'))
+  c(horizontal = sum(horizontal_move), depth = sum(depth_move))
+}
+```
+
+Benchmarking on 1000 datasets of 1000 rows this solution is only marginally faster (31 μs vs 37 μs), but it has an advantage in Part 2!
+
+```{r, eval = FALSE, include = FALSE}
+library(microbenchmark)
+set.seed(1)
+x2 <- data.frame(direction = sample(c("forward", "down", "up"), 1000, 
+                                    replace = TRUE),
+                 amount = sample(1:9, 1000, replace = TRUE))
+microbenchmark(f02a(x2$direction, x2$amount), times = 1000)
+microbenchmark(f02a_selby(x2$direction, x2$amount), times = 1000)
 ```
 
 ---
@@ -126,18 +159,18 @@ f02a(x$direction, x$amount)
     - It increases your depth by your aim **multiplied by** `X`.
     
 ```
-                  x  aim  depth
-forward 5   -->   5    -      - 
-down 5      -->        5      
-forward 8   -->  13          40
-up 3        -->        2
-down 8      -->       10
-forward 2   -->  15          60
+                  horizontal  aim  depth
+forward 5   -->            5    -      - 
+down 5      -->                 5      
+forward 8   -->           13          40
+up 3        -->                 2
+down 8      -->                10
+forward 2   -->           15          60
 
-==> x = 15, depth = 60
+==> horizontal = 15, depth = 60
 ```
 
-Heather's solution: first compute the sign of the change to aim, which is negative if the direction is "up" and positive otherwise. Then for each change in position, if the direction is "forward" add the amount to the horizontal position and the amount multiplied by aim to the depth, otherwise add sign multiplied by the amount to the aim.
+The following function solves this problem by first computing the sign of the change to aim, which is negative if the direction is "up" and positive otherwise. Then for each change in position, if the direction is "forward" the function adds the amount to the horizontal position and the amount multiplied by aim to the depth, otherwise it adds the sign multiplied by the amount to the aim.
 
 ```{r}
 f02b <- function(direction, amount) {
@@ -156,3 +189,27 @@ f02b <- function(direction, amount) {
 f02b(x$direction, x$amount)
 ```
 
+As an intepreted language, for loops can be slow in R and vectorized solutions are often preferable if memory is not an issue. David Selby showed that his solution from Part 1 can be extended to solve the problem in Part 2, by using cumulative sums of the value that represented `depth` in Part 1 to compute the `aim` value in Part 2.
+
+```{r}
+f02b_revised <- function(direction, amount) {
+  horizontal_move <- amount * (direction == "forward")
+  aim <- cumsum(amount * (direction == "down") - amount * (direction == "up"))
+  depth_move <- aim * horizontal_move
+  c(horizontal = sum(horizontal_move), depth = sum(depth_move))
+}
+f02b_revised(x$direction, x$amount)
+```
+Benchmarking these two solutions on 1000 data sets of 1000 rows, the vectorized solution is ten times faster (58 μs  vs 514 μs).
+
+```{r, eval = FALSE, include = FALSE}
+library(microbenchmark)
+set.seed(1)
+x2 <- data.frame(direction = sample(c("forward", "down", "up"), 1000, 
+                                    replace = TRUE),
+                 amount = sample(1:9, 1000, replace = TRUE))
+microbenchmark(f02b(x2$direction, x2$amount), times = 1000)
+microbenchmark(f02b_revised(x2$direction, x2$amount), times = 1000)
+```
+
+# Reflections
