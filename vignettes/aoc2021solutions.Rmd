@@ -62,3 +62,52 @@ Compute product
 ```{r}
 prod(position)
 ```
+# Day 3
+
+Gamma and epsilon rate:
+
+```{r f03a}
+x <- read.fwf(system.file("input03.txt", package = "adventofcode21"), 
+              widths = rep(1, 12))
+x <- as.matrix(x)
+rates <- f03a(x)
+rates
+```
+
+Power consumption
+
+```{r}
+prod(rates)
+```
+Oxygen generator rating and CO2 scrubber rating
+
+```{r}
+rating <- f03b(x)
+rating
+```
+```{r}
+prod(rating)
+```
+# Day 4
+
+```{r}
+x <- list()
+x[[1]] <- scan(system.file("input04.txt", package = "adventofcode21"), 
+               sep = ",", nlines = 1)
+x[[2]] <- list()
+for (i in 1:1000){
+   res <- 
+    try(as.matrix(read.fwf(system.file("input04.txt", 
+                                       package = "adventofcode21"), 
+                           widths = rep(3, 5), skip = 2 + (i - 1)*6, n = 5)),
+        silent = TRUE)
+   if (!inherits(res, "try-error")) {
+     x[[2]][[i]] <- res
+   } else break
+}
+prod(f04a(x[[1]], x[[2]]))
+```
+```{r}
+prod(f04b(x[[1]], x[[2]]))
+```
+
