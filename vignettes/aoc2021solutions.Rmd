@@ -121,3 +121,18 @@ x$x2 <- as.numeric(gsub("[0-9]*[ ]->[ ]([0-9]*)", "\\1", x$y1x2))
 f05a(x$x1, x$y1, x$x2, x$y2)
 ```
 
+# Day 6
+
+```{r}
+x <- scan(system.file("input06.txt", package = "adventofcode21"),sep = ',')
+```
+
+```{r}
+f06a(x,80)
+```
+
+```{r}
+res <- f06a(x,256)
+format(res, digits = 15)
+```
+

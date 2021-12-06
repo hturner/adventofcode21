@@ -4,3 +4,7 @@
 ^LICENSE\.md$
 ^doc$
 ^Meta$
+^adventofcode21\.Rcheck$
+^adventofcode21.*\.tar\.gz$
+^adventofcode21.*\.tgz$
+^scratch.R$
