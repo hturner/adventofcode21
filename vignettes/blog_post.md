@@ -252,3 +252,17 @@ Benchmarking these two solutions on 1000 data sets of 1000 rows, the
 vectorized solution is ten times faster (58 μs vs 514 μs).
 
 # Reflections
+
+How do we solve a problem with code? Writing an answer requires what some educators call [computational thinking]( Computational Thinking - Google Books). We systematically conceptualise the solution to a problem and then work through a series of steps, drawing on coding conventions, to formulate an answer. Each answer is different and, often, a reflection of our priorities, experience, and domains of work. In our meeting, it was wonderful to see people with a wide range of experience and differing interests.
+
+Our discussion considered the criteria of a ‘good solution’.
+
+* **Speed** is one criteria of success - a solution which takes 100 μs (microseconds) is better than a solution taking 150 μs.
+* **Readability** for both sharing with others (as done above) and to help future you, lest you forget the intricacies of your own solution. 
+* **Good practice** such as variable naming and, perhaps, avoiding for loops where possible. Loops are slower and somewhat discouraged in the R community. Though some would argue they are more explicit and helpful for those coming from other languages, such as Python.
+* **Debugging friendly.** David Selby’s solutions are checked by a test comparing known inputs and outputs. I drew on my Psychology experience and opted for explicit DataFrame where I can see each operation. Testing is almost certainly a better solution which I adopt in my packages.
+* **Generalisability.** A solution tailored for the day 1 task may not be easily generalisable for day 2, and so on. It seemed desirable to refactor one’s code to create a solution which encompasses clusters of tasks. Though the effort and benefits of doing so are almost certainly debatable.
+
+We also discussed levels of abstraction. The TidyVerse is powerful, high level and quite opinionated. Adopting some of these functions returned some slower solutions where we were unsure of the underpinning operations. Solutions build within R base (the functions which come with R) were somewhat faster, though others using libraries such as data table were rather quick. Though these are certainly generalisation and prompted some discussion.
+
+How does one produce fast, readable, debuggable, generalisable code which follows good practice and operates at a suitable level of abstraction? Our discussions did not produce a definitive answer. Instead, our discussions and sharing solutions helped us understand the why and I certainly learned a few useful tricks.
