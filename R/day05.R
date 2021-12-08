@@ -99,13 +99,17 @@
 #' Consider all of the lines. *At how many points do at least two lines
 #' overlap?*
 #'
-#' @param x some data
+#' @param x1 x coordinate at start
+#' @param y1 y coordinate at start
+#' @param x2 x coordinate at end
+#' @param y2 x coordinate at end
 #' @return For Part One, `f05a(x)` returns .... For Part Two,
 #'   `f05b(x)` returns ....
 #' @export
 #' @examples
-#' f05a(example_data_05())
-#' f05b()
+#' x <- example_data_05()
+#' f05a(x$x1, x$y1, x$x2, x$y2)
+#' f05b(x$x1, x$y1, x$x2, x$y2)
 f05a <- function(x1, y1, x2, y2) {
   # vertical lines
   v <- x1 == x2

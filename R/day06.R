@@ -98,12 +98,13 @@
 #' *How many lanternfish would there be after 256 days?*
 #'
 #' @param x some data
+#' @param days number of days
 #' @return For Part One, `f06a(x)` returns .... For Part Two,
 #'   `f06b(x)` returns ....
 #' @export
 #' @examples
-#' f06a(example_data_06())
-#' f06b()
+#' x <- example_data_06()
+#' f06a(x[[1]], x[[2]])
 f06a <- function(x, days) {
   tab <- table(x)
   timer <- numeric(9)

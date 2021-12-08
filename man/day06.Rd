@@ -16,6 +16,8 @@ example_data_06(example = 1)
 \arguments{
 \item{x}{some data}
 
+\item{days}{number of days}
+
 \item{example}{Which example data to use (by position or name). Defaults to
 1.}
 }
@@ -118,6 +120,6 @@ After 256 days in the example above, there would be a total of
 \emph{How many lanternfish would there be after 256 days?}
 }
 \examples{
-f06a(example_data_06())
-f06b()
+x <- example_data_06()
+f06a(x[[1]], x[[2]])
 }

@@ -108,13 +108,15 @@
 #' final score be?*
 
 #'
-#' @param x some data
+#' @param x vector of numbers
+#' @param boards list of bingo boards (5x5 matrices)
 #' @return For Part One, `f04a(x)` returns .... For Part Two,
 #'   `f04b(x)` returns ....
 #' @export
 #' @examples
-#' f04a(example_data_04())
-#' f04b()
+#' x <- example_data_04()
+#' f04a(x[[1]], x[[2]])
+#' f04b(x[[1]], x[[2]])
 f04a <- function(x, boards) {
   for (i in seq_along(x)){
     for (b in seq_along(boards)){

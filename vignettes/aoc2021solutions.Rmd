@@ -136,3 +136,28 @@ res <- f06a(x,256)
 format(res, digits = 15)
 ```
 
+# Day 7
+
+```{r}
+x <- scan(system.file("input07.txt", package = "adventofcode21"),sep = ',')
+```
+
+```{r}
+f07a(x)
+```
+```{r}
+f07b(x)
+```
+
+## Day 8
+
+```{r}
+x <- as.matrix(read.table(system.file("input08.txt", package = "adventofcode21"),sep = ' '))[,-11]
+```
+
+```{r}
+f08a(x)
+```
+```{r}
+f08b(x)
+```

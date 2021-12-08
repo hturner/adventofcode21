@@ -14,7 +14,7 @@ f03b(x)
 example_data_03(example = 1)
 }
 \arguments{
-\item{x}{some data}
+\item{x}{matrix where each row is a binary value.}
 
 \item{example}{Which example data to use (by position or name). Defaults to
 1.}
@@ -167,7 +167,6 @@ generator rating and CO2 scrubber rating, then multiply them together.
 represent your answer in decimal, not binary.)
 }
 \examples{
-x <- example_data_03()
 f03a(example_data_03())
-f03b()
+f03b(example_data_03())
 }

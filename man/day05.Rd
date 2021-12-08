@@ -14,10 +14,16 @@ f05b(x1, y1, x2, y2)
 example_data_05(example = 1)
 }
 \arguments{
+\item{x1}{x coordinate at start}
+
+\item{y1}{y coordinate at start}
+
+\item{x2}{x coordinate at end}
+
+\item{y2}{x coordinate at end}
+
 \item{example}{Which example data to use (by position or name). Defaults to
 1.}
-
-\item{x}{some data}
 }
 \value{
 For Part One, \code{f05a(x)} returns .... For Part Two,
@@ -119,6 +125,7 @@ Consider all of the lines. \emph{At how many points do at least two lines
 overlap?}
 }
 \examples{
-f05a(example_data_05())
-f05b()
+x <- example_data_05()
+f05a(x$x1, x$y1, x$x2, x$y2)
+f05b(x$x1, x$y1, x$x2, x$y2)
 }

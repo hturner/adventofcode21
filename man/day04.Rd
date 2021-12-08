@@ -14,7 +14,9 @@ f04b(x, boards)
 example_data_04(example = 1)
 }
 \arguments{
-\item{x}{some data}
+\item{x}{vector of numbers}
+
+\item{boards}{list of bingo boards (5x5 matrices)}
 
 \item{example}{Which example data to use (by position or name). Defaults to
 1.}
@@ -125,6 +127,7 @@ Figure out which board will win last. \emph{Once it wins, what would its
 final score be?}
 }
 \examples{
-f04a(example_data_04())
-f04b()
+x <- example_data_04()
+f04a(x[[1]], x[[2]])
+f04b(x[[1]], x[[2]])
 }

@@ -143,14 +143,13 @@
 #' represent your answer in decimal, not binary.)
 
 #'
-#' @param x some data
+#' @param x matrix where each row is a binary value.
 #' @return For Part One, `f03a(x)` returns .... For Part Two,
 #'   `f03b(x)` returns ....
 #' @export
 #' @examples
-#' x <- example_data_03()
 #' f03a(example_data_03())
-#' f03b()
+#' f03b(example_data_03())
 f03a <- function(x) {
   nr <- nrow(x)
   nc <- ncol(x)
