@@ -62,6 +62,7 @@ Compute product
 ```{r}
 prod(position)
 ```
+
 # Day 3
 
 Gamma and epsilon rate:
@@ -88,6 +89,7 @@ rating
 ```{r}
 prod(rating)
 ```
+
 # Day 4
 
 ```{r}
@@ -110,6 +112,7 @@ prod(f04a(x[[1]], x[[2]]))
 ```{r}
 prod(f04b(x[[1]], x[[2]]))
 ```
+
 ## Day 5
 
 ```{r}
@@ -121,7 +124,7 @@ x$x2 <- as.numeric(gsub("[0-9]*[ ]->[ ]([0-9]*)", "\\1", x$y1x2))
 f05a(x$x1, x$y1, x$x2, x$y2)
 ```
 
-# Day 6
+## Day 6
 
 ```{r}
 x <- scan(system.file("input06.txt", package = "adventofcode21"),sep = ',')
@@ -136,7 +139,7 @@ res <- f06a(x,256)
 format(res, digits = 15)
 ```
 
-# Day 7
+## Day 7
 
 ```{r}
 x <- scan(system.file("input07.txt", package = "adventofcode21"),sep = ',')
@@ -162,7 +165,8 @@ f08a(x)
 ```{r}
 f08b(x)
 ```
-# Day 9
+
+## Day 9
 
 ```{r}
 x <- as.matrix(read.fwf(system.file("input09.txt", package = "adventofcode21"), widths = rep(1, 100)))
@@ -176,7 +180,8 @@ works on example data, but not correct solution...
 ```{r}
 f09b(x)
 ```
-# Day 10
+
+## Day 10
 
 ```{r}
 x <- scan(system.file("input10.txt", package = "adventofcode21"),
@@ -188,6 +193,7 @@ sum(f10a(x))
 ```{r}
 f10b(x)
 ```
+
 ## Day 11
 
 ```{r}
@@ -198,6 +204,23 @@ x <- as.matrix(read.fwf(system.file("input11.txt", package = "adventofcode21"),
 ```{r}
 f11a(x, 100)
 ```
+
 ```{r}
 f11b(x)
+```
+
+## Day 12
+
+```{r}
+x <- read.table(system.file("input12.txt", 
+                            package = "adventofcode21"), sep = "-")
+names(x) <- c("from", "to")
+```
+
+```{r}
+f12a(x)
+```
+
+```{r}
+f12b(x)
 ```
