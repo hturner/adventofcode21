@@ -158,6 +158,46 @@ x <- as.matrix(read.table(system.file("input08.txt", package = "adventofcode21")
 ```{r}
 f08a(x)
 ```
+
 ```{r}
 f08b(x)
+```
+# Day 9
+
+```{r}
+x <- as.matrix(read.fwf(system.file("input09.txt", package = "adventofcode21"), widths = rep(1, 100)))
+```
+
+```{r}
+f09a(x)
+```
+works on example data, but not correct solution...
+
+```{r}
+f09b(x)
+```
+# Day 10
+
+```{r}
+x <- scan(system.file("input10.txt", package = "adventofcode21"),
+          "character")
+```
+```{r}
+sum(f10a(x))
+```
+```{r}
+f10b(x)
+```
+## Day 11
+
+```{r}
+x <- as.matrix(read.fwf(system.file("input11.txt", package = "adventofcode21"),
+                        widths = rep(1, 10)))
+```
+
+```{r}
+f11a(x, 100)
+```
+```{r}
+f11b(x)
 ```
