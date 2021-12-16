@@ -224,3 +224,71 @@ f12a(x)
 ```{r}
 f12b(x)
 ```
+
+## Day 13
+
+```{r}
+coord <- read.table(system.file("input13.txt", package = "adventofcode21"), 
+                    sep = ",", nrows = 853)
+instructions <- scan(system.file("input13.txt", package = "adventofcode21"), 
+                     what = "character", skip = 854, sep = "\n")
+```
+```{r}
+f13a(coord, instructions)
+```
+```{r}
+x <- f13b(coord, instructions)
+image(t(x)[,nrow(x):1])
+```
+
+## Day 14
+
+```{r}
+template <- readLines(system.file("input14.txt", package = "adventofcode21"), 
+                      n = 1)
+code <- scan(system.file("input14.txt", package = "adventofcode21"), 
+             what = "character", skip = 2, sep = "\n")
+template <- strsplit(template, "")[[1]]
+code <- structure(gsub(".*[ ]([A-Z])", "\\1", code), 
+                  names = gsub("([A-Z]+).*", "\\1", code))
+```
+```{r}
+f14a(template, code)
+```
+```{r}
+res <- f14b(template, code, 40)
+format(res, digits = 13)
+```
+
+## Day 15
+
+```{r}
+x <- read.fwf(system.file("input15.txt", 
+                          package = "adventofcode21"), 
+              widths = rep(1, 100))
+x <- as.matrix(x)
+```
+
+```{r}
+f15a(x)
+```
+```{r}
+f15a(f15b(x))
+```
+
+## Day 16 
+
+```{r}
+x <- readLines(system.file("input16.txt", 
+                          package = "adventofcode21"))
+```
+
+
+```{r}
+f16a(x)$version_sum
+```
+```{r}
+res <- f16a(x)$value
+format(res, digits = 13)
+```
+
