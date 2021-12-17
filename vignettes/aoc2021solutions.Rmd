@@ -292,3 +292,17 @@ res <- f16a(x)$value
 format(res, digits = 13)
 ```
 
+## Day 17
+
+```{r}
+x <- readLines(system.file("input17.txt", package = "adventofcode21"), 
+               n = 1)
+```
+
+```{r}
+max(f17a(x))
+```
+```{r}
+length(f17b(x))
+```
+

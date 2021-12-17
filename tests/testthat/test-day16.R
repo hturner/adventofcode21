@@ -15,6 +15,6 @@ test_that("f16a works on example data for part 2", {
   expect_equal(f16a(example_data_16(11))$value, 9)
   expect_equal(f16a(example_data_16(12))$value, 1)
   expect_equal(f16a(example_data_16(13))$value, 0)
-  expect_equal(f16a(example_data_16(8))$value, 0)
-  expect_equal(f16a(example_data_16(8))$value, 1)
+  expect_equal(f16a(example_data_16(14))$value, 0)
+  expect_equal(f16a(example_data_16(15))$value, 1)
 })
