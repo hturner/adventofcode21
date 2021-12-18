@@ -306,3 +306,26 @@ max(f17a(x))
 length(f17b(x))
 ```
 
+## Day 18
+
+```{r}
+x <- readLines(system.file("input18.txt", package = "adventofcode21"))
+```
+
+```{r}
+f18a(x)
+```
+```{r}
+library(utils)
+pairs <- combn(x, 2)
+n <- ncol(pairs)
+res1 <- res2 <- numeric(n)
+for (i in 1:n){
+  res1[i] <- f18a(pairs[,i])
+}
+for (i in 1:n){
+  res2[i] <- f18a(rev(pairs[,i]))
+}
+max(c(res1, res2))
+```
+
