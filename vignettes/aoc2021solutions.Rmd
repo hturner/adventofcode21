@@ -329,3 +329,49 @@ for (i in 1:n){
 max(c(res1, res2))
 ```
 
+## Day 19
+
+```{r}
+# find beginnings
+x <- readLines(system.file("input19.txt", package = "adventofcode21"))
+start <- grep("^---.*", x)
+end <- c(start[-1] - 2, length(x))
+res <- vector(mode = "list", length = length(start))
+for (i in seq_along(res)){
+  res[[i]] <- as.matrix(read.table(system.file("input19.txt", 
+                                         package = "adventofcode21"), 
+                                   sep = ",", skip = start[i], 
+                                   nrows = end[i] - start[i]))
+}
+```
+
+```{r}
+out <- f19a(res)
+nrow(out$beacons)
+```
+```{r}
+max(dist(out$scanners, method = "manhattan"))
+```
+  
+## Day 20
+
+```{r}
+code <- read.fwf(system.file("input20.txt", package = "adventofcode21"), 
+                 n = 1,
+                 widths = rep(1, 512), comment.char = "")
+code <- unlist(unname(code))
+code <- as.numeric(code == "#")
+x <- as.matrix(read.fwf(system.file("input20.txt", package = "adventofcode21"), 
+              skip = 2, widths = rep(1, 100), comment.char = ""))
+x <- x == "#"
+mode(x) <- "numeric"
+```
+
+```{r}
+f20a(code, x, steps = 2)
+```
+```{r}
+f20a(code, x, steps = 50)
+```
+
+
