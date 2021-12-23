@@ -373,5 +373,34 @@ f20a(code, x, steps = 2)
 ```{r}
 f20a(code, x, steps = 50)
 ```
+## Day 21
 
+```{r}
+input <- readLines(system.file("input21.txt", package = "adventofcode21"))
+pos <- as.numeric(gsub("[^:]+: ([0-9])", "\\1", input))
+```
+
+
+```{r}
+f21a(pos[1], pos[2])
+```
+```{r}
+out <- f21b(pos[1], pos[2])
+format(max(out), digits = 15)
+```
+## Day 22
+
+```{r}
+input <- readLines(system.file("input22.txt", package = "adventofcode21"), 
+                   n = 20)
+x <- gsub("([^x]+)(x.*)", "list(\\2)", input)
+x <- paste0("list(", 
+            paste(gsub("..", ":", x, fixed = TRUE), collapse = ","),
+            ")")
+x <- eval(parse(text = x))
+on <- gsub("([^ ]+)( .*)", "\\1", input) == "on"
+```
+```{r}
+f22a(x, on)
+```
 
