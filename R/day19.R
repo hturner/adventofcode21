@@ -432,8 +432,8 @@
 #'   `f19b(x)` returns ....
 #' @export
 #' @examples
-#' f19a(example_data_19())
-#' f19b()
+#' nrow(f19a(example_data_19())$beacons)
+#' max(dist(f19a(example_data_19())$scanners, method = "manhattan"))
 f19a <- function(x) {
   rot_x <- matrix(c(1,0,0,
                     0,0,1,

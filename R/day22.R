@@ -144,13 +144,15 @@
 #'
 #' *(Try using `convert_clipboard_html_to_roxygen_md()`)*
 #'
-#' @param x some data
+#' @param x list where each element is a list of x, y and z coordinates
+#' @param on logical vector of length(x), specifying whether cuboid should be
+#' turned on or off
 #' @return For Part One, `f22a(x)` returns .... For Part Two,
 #'   `f22b(x)` returns ....
 #' @export
 #' @examples
-#' f22a(example_data_22())
-#' f22b()
+#' ex <- example_data_22(1)
+#' f22a(ex$x, ex$on)
 f22a <- function(x, on) {
   n <- length(x)
   y <- do.call(expand.grid,x[[1]])
@@ -164,18 +166,6 @@ f22a <- function(x, on) {
   }
   nrow(y)
 }
-
-#' @rdname day22
-#' @export
-f22b <- function(x) {
-
-}
-
-
-f22_helper <- function(x) {
-
-}
-
 
 #' @param example Which example data to use (by position or name). Defaults to
 #'   1.

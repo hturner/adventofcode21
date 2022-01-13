@@ -67,10 +67,12 @@
 #' @param x some data
 #' @return For Part One, `f15a(x)` returns .... For Part Two,
 #'   `f15b(x)` returns ....
+#' @importFrom igraph graph_from_data_frame shortest_paths
 #' @export
 #' @examples
 #' f15a(example_data_15())
-#' f15b()
+#' x <- f15b(example_data_15())
+#' f15a(x)
 f15a <- function(x) {
   # convert weight matrix to graph
   nr <- nrow(x)

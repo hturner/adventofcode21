@@ -89,13 +89,16 @@
 #'
 #' *(Try using `convert_clipboard_html_to_roxygen_md()`)*
 #'
-#' @param x some data
+#' @param pos_a Starting position of player A
+#' @param pos_b Starting position of player B
 #' @return For Part One, `f21a(x)` returns .... For Part Two,
 #'   `f21b(x)` returns ....
 #' @export
 #' @examples
-#' f21a(example_data_21())
-#' f21b()
+#' f21a(4, 8)
+#' \dontrun{
+#'   max(f21b(4, 8))
+#' }
 f21a <- function(pos_a, pos_b) {
   cycle <- function(i, n) (i - 1) %% n + 1
   a <- b <- 0

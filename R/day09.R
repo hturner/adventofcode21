@@ -49,99 +49,109 @@
 #' Find all of the low points on your heightmap. *What is the sum of the
 #' risk levels of all low points on your heightmap?*
 #'
-#' **Part Two**
+#' **Part Two*
 #'
-#' *(Use have to manually add this yourself.)*
+#' Next, you need to find the largest basins so you know what areas are
+#' most important to avoid.
 #'
-#' *(Try using `convert_clipboard_html_to_roxygen_md()`)*
+#' A *basin* is all locations that eventually flow downward to a single low
+#' point. Therefore, every low point has a basin, although some basins are
+#' very small. Locations of height `9` do not count as being in any basin,
+#' and all other locations will always be part of exactly one basin.
 #'
-#' @param x some data
+#' The *size* of a basin is the number of locations within the basin,
+#' including the low point. The example above has four basins.
+#'
+#' The top-left basin, size `3`:
+#'
+#'     2199943210
+#'     3987894921
+#'     9856789892
+#'     8767896789
+#'     9899965678
+#'
+#' The top-right basin, size `9`:
+#'
+#'     2199943210
+#'     3987894921
+#'     9856789892
+#'     8767896789
+#'     9899965678
+#'
+#' The middle basin, size `14`:
+#'
+#'     2199943210
+#'     3987894921
+#'     9856789892
+#'     8767896789
+#'     9899965678
+#'
+#' The bottom-right basin, size `9`:
+#'
+#'     2199943210
+#'     3987894921
+#'     9856789892
+#'     8767896789
+#'     9899965678
+#'
+#' Find the three largest basins and multiply their sizes together. In the
+#' above example, this is `9 * 14 * 9 = 1134`.
+#'
+#' *What do you get if you multiply together the sizes of the three largest
+#' basins?*
+#'
+#' @param x input data
+#' @param low matrix of coordinates for lowest point in each basin
 #' @return For Part One, `f09a(x)` returns .... For Part Two,
 #'   `f09b(x)` returns ....
 #' @export
 #' @examples
-#' f09a(example_data_09())
-#' f09b()
+#' x <- example_data_09()
+#' low <- f09a(x)
+#' sum(1 + x[low])
+#' f09b(x, low)
 f09a <- function(x) {
   nr <- nrow(x)
   nc <- ncol(x)
-  up <- rbind(10, x[-nr,]) - x > 0
-  down <- rbind(x[-1,], 10) - x > 0
-  left <- cbind(10, x[,-nc]) - x > 0
-  right <- cbind(x[,-1], 10) - x > 0
-  sum(1 + x[up & down & left & right])
+  up <- rbind(10, x[-nr,]) > x
+  down <- rbind(x[-1,], 10) > x
+  left <- cbind(10, x[,-nc]) > x
+  right <- cbind(x[,-1], 10) > x
+  which(up & down & left & right, arr.ind = TRUE)
 }
 
 
 #' @rdname day09
 #' @export
-f09b <- function(x) {
-  nr <- nrow(x)
-  nc <- ncol(x)
-  up <- rbind(10, x[-nr,]) - x > 0
-  down <- rbind(x[-1,], 10) - x > 0
-  left <- cbind(10, x[,-nc]) - x > 0
-  right <- cbind(x[,-1], 10) - x > 0
-  low <- up & down & right & left
-  id <- which(low, arr.ind = TRUE)
-  nine <- x == 9
-  n <- numeric(nrow(id))
-  for (i in seq(nrow(id))){
-    count_up_and_down <- function(nine, pos, keep = FALSE){
-      count <- 1
-      # go up to next invalid value (or end of column)
-      for (j in rev(seq_len(pos[1] - 1))){
-        if (!identical(nine[j, pos[2]], keep)) break
-        count <- count + 1
-      }
-      # go down to next invalid value (or end of column)
-      for (j in pos[1] + seq_len(nr - pos[1])){
-        if (!identical(nine[j, pos[2]], keep)) break
-        count <- count + 1
-      }
-      count
-    }
-
-    pos <- id[i,]
-    # count non nines up and down from low point
-    n[i] <- countF <- count_up_and_down(nine, pos, FALSE)
-    # go right along columns
-    for (j in seq_len(nc - pos[2])){
-      # if not a nine, count non nines up and down
-      if (!nine[pos[1], pos[2] + j]) {
-        countF <- count_up_and_down(nine, c(pos[1], pos[2] + j), FALSE)
-        n[i] <- n[i] + countF
-      } else {
-        # if a nine, check if counting along edge
-        countT <- count_up_and_down(nine, c(pos[1], pos[2] + j), TRUE)
-        if (countF == countT) break
-        # else go down to next value that is not a 9 and count up and down
-        for (k in seq_len(nr - pos[1])){
-          if (nine[pos[1] + k, pos[2] + j]) break
-        }
-        countF <- count_up_and_down(nine, c(pos[1] + k, pos[2] + j), FALSE)
-        n[i] <- n[i] + countF
-      }
-    }
-    # go left along columns
-    for (j in seq_len(pos[2] - 1)){
-      if (!nine[pos[1], pos[2] - j]) {
-        countF <- count_up_and_down(nine, c(pos[1], pos[2] - j), FALSE)
-        n[i] <- n[i] + countF
-      } else {
-        countT <- count_up_and_down(nine, c(pos[1], pos[2] - j), TRUE)
-        if (countF == countT) break
-        # go down to next value that is not a 9
-        for (k in seq_len(nr - pos[1])){
-          if (!nine[pos[1] + k, pos[2] - j]) break
-        }
-        countF <- count_up_and_down(nine, c(pos[1] + k, pos[2] - j), FALSE)
-        n[i] <- n[i] + countF
-      }
-    }
+f09b <- function(x, low) {
+  # flood fill basin with 2s given starting point
+  # (most basic algorithm: https://en.wikipedia.org/wiki/Flood_fill)
+  floodfill <- function(M, row, col) {
+    # return M if starting point not in basin
+    if (!row %in% 1:nrow(M) || !col %in% 1:ncol(M)) return(M)
+    if (M[row, col] != 0) return(M)
+    # replace old value with new value
+    M[row, col] <- 2
+    # repeat for cells up, down, left & right
+    M <- Recall(M, row + 1, col    )
+    M <- Recall(M, row - 1, col    )
+    M <- Recall(M, row    , col - 1)
+    M <- Recall(M, row    , col + 1)
+    return(M)
   }
-  #prod(sort(n, decreasing = TRUE)[1:3])
-  list(id = id, n = n)
+
+  # find basins (edge = 1, inside basin = 0)
+  basins <- x == 9
+  mode(basins) <- "numeric"
+
+  # floodfill each basin starting from lowest point
+  # and count number of filled values (value = 2)
+  n <- nrow(low)
+  size <- numeric(n)
+  for (i in seq_len(n)){
+    size[i] <- sum(floodfill(basins, low[i, "row"], low[i, "col"]) == 2)
+  }
+  prod(sort(size, decreasing = TRUE)[1:3])
 }
 
 

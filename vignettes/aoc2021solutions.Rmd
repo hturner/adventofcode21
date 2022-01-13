@@ -172,13 +172,35 @@ f08b(x)
 x <- as.matrix(read.fwf(system.file("input09.txt", package = "adventofcode21"), widths = rep(1, 100)))
 ```
 
-```{r}
-f09a(x)
-```
-works on example data, but not correct solution...
+Find low points
 
 ```{r}
-f09b(x)
+low <- f09a(x)
+sum(1 + x[low])
+```
+Plot basins
+
+```{r}
+basins <- x == 9
+mode(basins) <- "numeric"
+image(1:ncol(x), 1:nrow(x), t(basins[nrow(basins):1,]))
+```
+
+
+Find product of sizes of the 3 largest basins:
+```{r}
+f09b(x, low) # ~2s
+```
+
+Alternative with `floodFill` from EBImage (Bioconductor package) - uses fast scanning algorithm implemented in C
+```{r}
+library(EBImage)
+n <- nrow(low)
+size <- numeric(n)
+for (i in seq_len(n)){ # ~ 0.03s
+  size[i] <- sum(floodFill(basins, low[i, ], 2) == 2)
+}
+prod(sort(size, decreasing = TRUE)[1:3]) 
 ```
 
 ## Day 10
@@ -403,4 +425,26 @@ on <- gsub("([^ ]+)( .*)", "\\1", input) == "on"
 ```{r}
 f22a(x, on)
 ```
+## Day 24
+
+```{r}
+input <- readLines(system.file("input24.txt", package = "adventofcode21"))
+start <- grep("inp", input)
+end <- c(start[-1] - 1, length(input))
+prog <- list()
+for (i in seq_len(14)) prog[[i]] <- input[start[i]:end[i]]
+```
+
+## Day 25
+
+```{r}
+input <- read.fwf(system.file("input25.txt", package = "adventofcode21"),
+                  rep(1, 139))
+input <- as.matrix(input)
+```
+
+```{r}
+f25a(input)
+```
+
 

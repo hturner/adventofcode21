@@ -184,7 +184,6 @@
 #' @export
 #' @examples
 #' f16a(example_data_16())
-#' f16b()
 f16a <- function(x) {
   code <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0,
                    1, 1, 1, 1, 1, 1, 1, 1,
@@ -204,7 +203,9 @@ f16a <- function(x) {
   read_literal <- function(s){
     flags <- seq(to = length(s), by = 5)
     n <- which(s[flags] == 0)[1]
-    list(value = as_decimal(s[seq(flags[n] + 4)][-flags]),
+    literal <- as_decimal(s[seq(flags[n] + 4)][-flags])
+    list(value = literal,
+         literal = literal,
          read_length = n * 5 + 6)
   }
 
@@ -240,8 +241,10 @@ f16a <- function(x) {
       i <- i + 1
     }
     value <- lapply(res, `[[`, "value")
+    literal <- lapply(res, `[[`, "literal")
 
     list(value = as.numeric(do.call(id_fun(type_id + 1), value)),
+         literal = literal,
          read_length = end,
          version_sum = version +
            sum(unlist(lapply(res, `[[`, "version_sum"))))
@@ -250,19 +253,6 @@ f16a <- function(x) {
   x <- c(code[,x])
   read_packet(x)
 }
-
-
-#' @rdname day16
-#' @export
-f16b <- function(x) {
-
-}
-
-
-f16_helper <- function(x) {
-
-}
-
 
 #' @param example Which example data to use (by position or name). Defaults to
 #'   1.

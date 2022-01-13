@@ -98,8 +98,9 @@
 #'   `f10b(x)` returns ....
 #' @export
 #' @examples
-#' f10a(example_data_10())
-#' f10b()
+#' x <- example_data_10()
+#' sum(f10a(x))
+#' sum(f10b(x))
 f10a <- function(x) {
   n <- numeric(length(x))
   x <- strsplit(x, "")
@@ -132,6 +133,7 @@ f10a <- function(x) {
 }
 
 #' @rdname day10
+#' @importFrom stats median
 #' @export
 f10b <- function(x) {
   # only consider non corrupt strings

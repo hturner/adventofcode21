@@ -141,7 +141,7 @@
 #' @export
 #' @examples
 #' f12a(example_data_12())
-#' f12b()
+#' f12b(example_data_12())
 #' @importFrom dplyr left_join
 f12a <- function(x) {
  middle <- x$from != "start" & x$to !="end"

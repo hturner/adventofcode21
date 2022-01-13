@@ -1,7 +1,7 @@
 test_that("f16a works on example data", {
-  expect_equal(f16a(example_data_16(1))$value, 2021)
-  expect_equal(f16a(example_data_16(2))$value, c(10, 20))
-  expect_equal(f16a(example_data_16(3))$value, 1:3)
+  expect_equal(f16a(example_data_16(1))$literal, 2021)
+  expect_equal(f16a(example_data_16(2))$literal, list(10, 20))
+  expect_equal(f16a(example_data_16(3))$literal, as.list(1:3))
   expect_equal(f16a(example_data_16(4))$version_sum, 16)
   expect_equal(f16a(example_data_16(5))$version_sum, 12)
   expect_equal(f16a(example_data_16(6))$version_sum, 23)

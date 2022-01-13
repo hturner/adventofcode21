@@ -94,13 +94,16 @@
 #'
 #' *(Try using `convert_clipboard_html_to_roxygen_md()`)*
 #'
-#' @param x some data
+#' @param template vector of letters in template
+#' @param code vector of insertion letters named by corresponding pair of
+#' letters
+#' @param steps number of steps
 #' @return For Part One, `f14a(x)` returns .... For Part Two,
 #'   `f14b(x)` returns ....
 #' @export
 #' @examples
-#' f14a(example_data_14())
-#' f14b()
+#' f14a(example_data_14(1), example_data_14(2))
+#' f14b(example_data_14(1), example_data_14(2))
 f14a <- function(template, code, steps = 10) {
   for(i in seq_len(steps)){
     n <- length(template)

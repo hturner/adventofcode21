@@ -232,10 +232,10 @@
 #' @param x some data
 #' @return For Part One, `f18a(x)` returns .... For Part Two,
 #'   `f18b(x)` returns ....
+#' @importFrom utils relist
 #' @export
 #' @examples
-#' f18a(example_data_18())
-#' f18b()
+#' max(f18a(example_data_18(2)))
 f18a <- function(x) {
   as_list <- function(x){
     x <- gsub("[", "list(a =", x, fixed = TRUE)
@@ -317,19 +317,6 @@ f18a <- function(x) {
 
   magnitude(res[[1]], res[[2]])
 }
-
-
-#' @rdname day18
-#' @export
-f18b <- function(x) {
-
-}
-
-
-f18_helper <- function(x) {
-
-}
-
 
 #' @param example Which example data to use (by position or name). Defaults to
 #'   1.

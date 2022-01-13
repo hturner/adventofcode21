@@ -158,13 +158,14 @@
 #'
 #' *(Try using `convert_clipboard_html_to_roxygen_md()`)*
 #'
-#' @param x some data
+#' @param code image enhancement string
+#' @param x logical matrix representing image, `TRUE` for "#", `FALSE` for `.`
+#' @param steps number of enhancement steps
 #' @return For Part One, `f20a(x)` returns .... For Part Two,
 #'   `f20b(x)` returns ....
 #' @export
 #' @examples
-#' f20a(example_data_20())
-#' f20b()
+#' f20a(example_data_20(1), example_data_20(2), steps = 2)
 f20a <- function(code, x, steps) {
   enhance <- function(x){
     nr <- nrow(x)
@@ -194,19 +195,6 @@ f20a <- function(code, x, steps) {
   }
   sum(x)
 }
-
-
-#' @rdname day20
-#' @export
-f20b <- function(x) {
-
-}
-
-
-f20_helper <- function(x) {
-
-}
-
 
 #' @param example Which example data to use (by position or name). Defaults to
 #'   1.

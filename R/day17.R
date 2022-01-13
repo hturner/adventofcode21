@@ -157,12 +157,13 @@
 #' *(Try using `convert_clipboard_html_to_roxygen_md()`)*
 #'
 #' @param x some data
+#' @param part1 set to `TRUE` if solving part 1, `FALSE` otherwise
 #' @return For Part One, `f17a(x)` returns .... For Part Two,
 #'   `f17b(x)` returns ....
 #' @export
 #' @examples
-#' f17a(example_data_17())
-#' f17b()
+#' max(f17a(example_data_17()))
+#' length(f17b(example_data_17()))
 f17a <- function(x) {
   left <- as.numeric(gsub(".*=([0-9]+)[..].*", "\\1", x))
   right <- as.numeric(gsub(".*[..]([0-9]+),.*", "\\1", x))
@@ -243,7 +244,7 @@ f17b <- function(x, part1 = TRUE) {
   # vy can now be negative, down to bottom
   vy_range <- bottom:(-bottom - 1)
 
-  val <- matrix(nr = length(vx_range), nc = length(vy_range))
+  val <- matrix(nrow = length(vx_range), ncol = length(vy_range))
   for (i in seq_along(vx_range)){
     for (j in seq_along(vy_range)){
       val[i, j] <- opt_fun(vx_range[i], vy_range[j], top, bottom, left, right)

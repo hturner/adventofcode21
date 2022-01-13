@@ -336,13 +336,14 @@
 #'
 #' *(Try using `convert_clipboard_html_to_roxygen_md()`)*
 #'
-#' @param x some data
+#' @param x input data
+#' @param n number of steps
 #' @return For Part One, `f11a(x)` returns .... For Part Two,
 #'   `f11b(x)` returns ....
 #' @export
 #' @examples
-#' f11a(example_data_11())
-#' f11b()
+#' f11a(example_data_11(), 2)
+#' f11b(example_data_11())
 f11a <- function(x, n) {
   nr <- nrow(x)
   nc <- ncol(x)

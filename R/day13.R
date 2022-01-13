@@ -154,13 +154,14 @@
 #'
 #' *(Try using `convert_clipboard_html_to_roxygen_md()`)*
 #'
-#' @param x some data
+#' @param coord data frame of co-ordinates
+#' @param instructions chanracter vector of instructions
 #' @return For Part One, `f13a(x)` returns .... For Part Two,
 #'   `f13b(x)` returns ....
 #' @export
 #' @examples
-#' f13a(example_data_13())
-#' f13b()
+#' f13a(example_data_13(1), example_data_13(2))
+#' f13b(example_data_13(1), example_data_13(2))
 f13a <- function(coord, instructions) {
   coord <- coord + 1
   dim_x <- rev(vapply(coord, max, numeric(1)))
